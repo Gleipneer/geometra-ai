@@ -1,0 +1,74 @@
+# Monitoring configuration for Geometra AI
+
+# Endpoints to monitor
+endpoints:
+  - name: api_health
+    url: http://localhost:8000/api/v1/health
+    interval: 60
+    timeout: 5
+    expected_status: 200
+    
+  - name: memory_status
+    url: http://localhost:8000/api/v1/memory/status
+    interval: 300
+    timeout: 10
+    expected_status: 200
+
+# Memory monitoring
+chroma_url: http://localhost:8000/api/v1/memory/chroma
+redis_url: http://localhost:8000/api/v1/memory/redis
+
+# Monitoring settings
+monitoring_interval: 300  # 5 minutes
+log_file: monitoring/logs/monitor.log
+metrics_file: monitoring/logs/metrics.json
+
+# Alert rules
+alert_rules:
+  endpoint_down:
+    condition: "lambda x: not x['status']"
+    message: "Endpoint {name} is down"
+    severity: high
+    
+  high_memory:
+    condition: "lambda x: x['percent'] > 90"
+    message: "Memory usage is {percent}%"
+    severity: medium
+    
+  slow_response:
+    condition: "lambda x: x['response_time'] > 2"
+    message: "Response time is {response_time}s"
+    severity: low
+
+# External services
+external_services:
+  - name: railway
+    type: http
+    url: https://railway.app/api/v1/status
+    interval: 3600
+    
+  - name: openai
+    type: http
+    url: https://api.openai.com/v1/health
+    interval: 3600
+    
+  - name: ssl_cert
+    type: ssl
+    host: api.geometra.ai
+    port: 443
+    interval: 3600
+    warning_days: 30
+
+# Notification settings
+notifications:
+  email:
+    enabled: true
+    recipients:
+      - alerts@geometra.ai
+    smtp_server: smtp.gmail.com
+    smtp_port: 587
+    
+  slack:
+    enabled: true
+    webhook_url: ${SLACK_WEBHOOK_URL}
+    channel: monitoring-alerts 

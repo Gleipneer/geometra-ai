@@ -1,0 +1,9 @@
+Context: {{ context }}
+
+Memory: {% for item in memory %}
+- {{ item.content }}
+{% endfor %}
+
+Timestamp: {{ timestamp }}
+
+User Input: {{ user_input }} 

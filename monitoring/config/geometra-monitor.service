@@ -1,0 +1,16 @@
+[Unit]
+Description=Geometra AI Monitoring Service
+After=network.target
+
+[Service]
+Type=simple
+User=geometra
+Group=geometra
+WorkingDirectory=/home/geometra/meta
+Environment=PYTHONPATH=/home/geometra/meta
+ExecStart=/usr/bin/python3 monitoring/scripts/monitor.py
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target 

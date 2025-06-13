@@ -1,0 +1,34 @@
+# System configuration
+system:
+  name: "Meta System"
+  version: "1.0.0"
+  environment: "development"
+
+# API configuration
+api:
+  host: "0.0.0.0"
+  port: 8000
+  debug: true
+
+# Database configuration
+database:
+  redis:
+    url: "${REDIS_URL}"
+  postgres:
+    url: "${POSTGRES_URL}"
+
+# AI configuration
+ai:
+  model: "gpt-4"
+  temperature: 0.7
+  max_tokens: 2000
+
+# Security configuration
+security:
+  jwt_secret: "${JWT_SECRET}"
+  api_key_header: "X-API-Key"
+
+# Monitoring configuration
+monitoring:
+  log_level: "INFO"
+  metrics_port: 9090
